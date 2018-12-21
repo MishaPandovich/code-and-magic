@@ -1,7 +1,5 @@
 'use strict';
-/*показываю блок с игроками*/
-var userDialog = document.querySelector('.setup');
-userDialog.classList.remove('hidden');
+
 /*данные по волшебниками*/
 var WIZARD_NAMES = ['Иван', 'Хуан Себастьян', 'Мария', 'Кристоф', 'Виктор', 'Юлия', 'Люпита', 'Вашингтон'];
 var WIZARD_FAMILY = ['да Марья', 'Верон', 'Мирабелла', 'Вальц', 'Онопко', 'Топольницкая', 'Нионго', 'Ирвинг'];
@@ -65,4 +63,66 @@ parentWizardElement.appendChild(fragment);
 /*показ блока*/
 document.querySelector('.setup-similar').classList.remove('hidden');
 
+/*4-ое задание
+Окно.setup должно открываться по нажатию на блок.setup-open.
+Открытие окна производится удалением класса hidden у блока*/
+var ESC_KEYCODE = 27;
+var ENTER_KEYCODE = 13;
 
+var setup = document.querySelector('.setup');
+var setupOpen = document.querySelector('.setup-open');
+var setupClose = setup.querySelector('.setup-close');
+
+/*Если фокус находится на форме ввода имени, то окно закрываться не должно.*/
+var buttonFocus = document.querySelector('.setup-user-name');
+var onPopupEscPress = function(evt) {
+	if (setupUserName === document.activeElement) {
+		return evt;
+	} else {
+	  if (evt.keyCode === ESC_KEYCODE) {
+	    closePopup();
+	  }
+	}
+};
+
+var openPopup = function() {
+  setup.classList.remove('hidden');
+  document.addEventListener('keydown', onPopupEscPress);
+};
+
+var closePopup = function() {
+  setup.classList.add('hidden');
+  document.removeEventListener('keydown', onPopupEscPress);
+};
+
+setupOpen.addEventListener('click', function() {
+	openPopup();
+});
+
+setupOpen.addEventListener('keydown', function(evt) {
+	if (evt.keyCode === ENTER_KEYCODE) {
+    openPopup();
+  }
+});
+
+setupClose.addEventListener('click', function() {
+	closePopup();
+});
+
+setupClose.addEventListener('keydown', function(evt) {
+	if (evt.keyCode === ENTER_KEYCODE) {
+    closePopup();
+  }
+});
+
+/*Изменение цвета мантии персонажа по нажатию*/
+var wizardColorCoat = document.querySelector('.setup-wizard .wizard-coat');
+wizardColorCoat.style.fill = getRandom(COAT_COLOR);
+/*Изменение цвета глаз персонажа по нажатию*/
+var wizardColorEyes = document.querySelector('.setup-wizard .wizard-eyes');
+wizardColorEyes.style.fill = getRandom(EYES_COLOR);
+
+var FIREBALL_COLOR = ['#ee4830', '#30a8ee', '#5ce6c0', '#e848d5', '#e6e848'];
+/*Изменение цвета фаерболов по нажатию*/
+var wizardColorFireball = document.querySelector('.setup-fireball-wrap');
+wizardColorFireball.style.backgroundColor = getRandom(FIREBALL_COLOR);
